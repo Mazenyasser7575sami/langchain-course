@@ -7,6 +7,8 @@ from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
 from tavily import TavilyClient
 from langchain_tavily import TavilySearch
+from typing import List
+from pydantic import BaseModel,Field
 
 # tavily = TavilyClient()
 #
@@ -15,11 +17,18 @@ from langchain_tavily import TavilySearch
 #     """Look up real-time information and weather conditions for a given location or query."""
 #     print(f'Searching for {query}')
 #     return tavily.search(query)
+class Source(BaseModel):
+    """Schema for source used by the agent"""
+    Url:str=Field(description="The Url of the source")
+class AgentResponse(BaseModel):
+    """Schema for agent response with answer and sources"""
+    answer:str=Field(description="The agent answer to the question")
+    sources:List[Source]=Field(default_factory=list,description=" a list of The sources that the agent answer")
 
-llm = ChatOpenAI()
+llm = ChatOpenAI(model="gpt-5")
 llm1=ChatOllama(model='gemma4:12b')
 tools=[TavilySearch()]
-agent=create_agent(model=llm1,tools=tools)
+agent=create_agent(model=llm,tools=tools,response_format=AgentResponse)
 
 
 def main():
