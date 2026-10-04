@@ -33,7 +33,6 @@ def format_docs(docs):
     """Format retrieved documents into a single string."""
     return "\n\n".join(doc.page_content for doc in docs)
 @traceable(name="without lcel")
-
 def retrieval_chain_without_lcel(query: str,agent):
     """
     Simple retrieval chain without LCEL.
@@ -64,7 +63,6 @@ def retrieval_chain_without_lcel(query: str,agent):
 # IMPLEMENTATION 2: With LCEL (LangChain Expression Language) - BETTER APPROACH
 # ============================================================================
 @traceable(name="with lcel")
-
 def create_retrieval_chain_with_lcel(agent):
     """
     Create a retrieval chain using LCEL (LangChain Expression Language).
